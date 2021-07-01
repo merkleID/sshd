@@ -1,0 +1,6 @@
+IP=$(echo $SSH_CONNECTION | cut -d " " -f 1)
+WHO=$(whois -h  whois.arin.net $IP | egrep -i 'netname|origin' | grep -v OriginAS)
+
+echo ""
+echo "Connection From: $IP"
+echo $WHO

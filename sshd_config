@@ -7,7 +7,7 @@ LogLevel VERBOSE
 PermitRootLogin no
 PubkeyAuthentication yes
 AuthorizedKeysFile .ssh/authorized_keys
-MaxAuthTries 2
+MaxAuthTries 6
 PasswordAuthentication no
 PermitEmptyPasswords no
 ChallengeResponseAuthentication no

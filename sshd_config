@@ -5,41 +5,42 @@ HostKey /etc/ssh/ssh_host_ed25519_key
 SyslogFacility AUTH
 LogLevel VERBOSE
 PermitRootLogin no
-AuthenticationMethods publickey
 PubkeyAuthentication yes
 AuthorizedKeysFile .ssh/authorized_keys
-MaxAuthTries 3
+MaxAuthTries 6
 PasswordAuthentication no
 PermitEmptyPasswords no
-KbdInteractiveAuthentication no
+ChallengeResponseAuthentication no
 UsePAM yes
+AllowAgentForwarding no
+AllowTcpForwarding no
 IgnoreRhosts yes
 HostbasedAuthentication no
 GatewayPorts no
 PermitUserEnvironment no
+X11Forwarding no
 PrintMotd no
 PrintLastLog yes
 TCPKeepAlive yes
 UseDNS no
+PermitTunnel no
 AcceptEnv LANG LC_*
 
-DisableForwarding yes
-AllowAgentForwarding no
-AllowTcpForwarding no
-GatewayPorts no
-X11Forwarding no
-PermitTunnel no
-
-LoginGraceTime 30
-MaxAuthTries 3
-MaxSessions 4
-RekeyLimit 1G 1h
-ClientAliveInterval 300
-ClientAliveCountMax 2
-
-Subsystem sftp internal-sftp -f AUTHPRIV -l INFO
+Subsystem sftp /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO
 
 Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com
 MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
-KexAlgorithms mlkem768x25519-sha256,sntrup761x25519-sha512,curve25519-sha256,curve25519-sha256@libssh.org
+KexAlgorithms mlkem768x25519-sha256,sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org
+# non-PQC kex algos: 
+#curve25519-sha256,curve25519-sha256@libssh.org
+
 HostKeyAlgorithms ssh-ed25519
+RekeyLimit 1G 1h
+AllowUsers Bob Alice
+
+# Disabilita il drop progressivo e alza il limite a 20 connessioni simultanee
+MaxStartups 20
+# Riduce la finestra temporale per evitare l'accumulo di connessioni pendenti
+LoginGraceTime 30s
+# Aumenta il numero massimo di sessioni aperte per connessione
+MaxSessions 10
